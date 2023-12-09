@@ -2,6 +2,7 @@ package com.nipun.dbms;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.intellijthemes.*;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubDarkContrastIJTheme;
 import com.nipun.dbms.DBManager;
 import com.nipun.dbms.DBDataStore;
 import com.nipun.dbms.Console;
@@ -677,7 +678,37 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_insert_dataActionPerformed
 
     private void bt_update_dataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_update_dataActionPerformed
-        // TODO add your handling code here:
+        currentTB = cmb_tb.getSelectedItem().toString();
+        if(isEmpty(currentTB)) {
+            return;
+        }
+        
+        int selectedRow = table_view.getSelectedRow();
+        int columns = table_view.getColumnCount();
+        StringBuilder data = new StringBuilder();
+        
+        if (selectedRow < 0) {
+            Console.print("Please select a row");
+            return;
+        }
+
+        for (int i = 0; i < columns; i++) {
+            data.append(table_view.getValueAt(selectedRow, i));
+            if (i != columns - 1) {
+                data.append(",");
+            }
+        }
+
+        if (data.toString().endsWith(",")) {
+            Console.print("Please set the values to all columns");
+            return;
+        }
+
+        if (db.insertDataToTable(currentTB, data.toString()) > 0) {
+            Console.print("Row Added");
+        }
+        initTableView();
+
     }//GEN-LAST:event_bt_update_dataActionPerformed
 
     private void bt_delete_all_dataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_delete_all_dataActionPerformed
@@ -715,7 +746,8 @@ public class MainUI extends javax.swing.JFrame {
 //            javax.swing.UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatIntelliJLaf());
 //            UIManager.setLookAndFeel(new MaterialLookAndFeel(new DarkStackOverflowTheme()));
             FlatLightLaf.setup();
-            UIManager.setLookAndFeel(new FlatHiberbeeDarkIJTheme());
+            UIManager.setLookAndFeel(new FlatGitHubDarkContrastIJTheme());
+//            UIManager.setLookAndFeel(new FlatHiberbeeDarkIJTheme());
 //            UIManager.setLookAndFeel(new FlatMaterialDesignDarkIJTheme());
 //            UIManager.setLookAndFeel(new com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubDarkContrastIJTheme());
 
